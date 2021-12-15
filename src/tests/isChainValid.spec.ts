@@ -1,4 +1,4 @@
-import { Block, BlockChain, Transaction } from "../";
+import { Block, BlockChain, Transaction, Wallet } from "../";
 
 describe("Is Chain Valid", () => {
   it("should return true if the chain is valid", () => {
@@ -13,12 +13,22 @@ describe("Is Chain Valid", () => {
 
   it("should return false if the chain was tampered with", () => {
     const tysonCoin = new BlockChain();
+    const myWallet = new Wallet();
+    const yourWallet = new Wallet();
     tysonCoin.difficulty = 1;
 
     tysonCoin.addBlock(new Block(1, []));
     tysonCoin.addBlock(new Block(2, []));
 
-    tysonCoin.chain[1].transactions = [new Transaction("123", "456", 100)];
+    const tx1 = new Transaction(
+      myWallet.getWalletAddress(),
+      yourWallet.getWalletAddress(),
+      100
+    );
+
+    tx1.signTransaction(myWallet.getPrivateKey());
+
+    tysonCoin.chain[1].transactions = [tx1];
 
     expect(tysonCoin.isChainValid()).toBe(false);
   });
