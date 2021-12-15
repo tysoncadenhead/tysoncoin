@@ -2,12 +2,12 @@ import { BlockChain, Transaction, Wallet } from "../";
 
 describe("Transactions", () => {
   it("Should accept transactions", () => {
-    const miningWallet = new Wallet();
-    const myWallet = new Wallet();
-    const yourWallet = new Wallet();
-    const myAddress = myWallet.getWalletAddress();
-    const yourAddress = yourWallet.getWalletAddress();
-    const miningAddress = miningWallet.getWalletAddress();
+    const miningWallet = Wallet.create();
+    const myWallet = Wallet.create();
+    const yourWallet = Wallet.create();
+    const myAddress = myWallet.getAddress();
+    const yourAddress = yourWallet.getAddress();
+    const miningAddress = miningWallet.getAddress();
 
     const tysonCoin = new BlockChain();
 

@@ -13,16 +13,16 @@ describe("Is Chain Valid", () => {
 
   it("should return false if the chain was tampered with", () => {
     const tysonCoin = new BlockChain();
-    const myWallet = new Wallet();
-    const yourWallet = new Wallet();
+    const myWallet = Wallet.create();
+    const yourWallet = Wallet.create();
     tysonCoin.difficulty = 1;
 
     tysonCoin.addBlock(new Block(1, []));
     tysonCoin.addBlock(new Block(2, []));
 
     const tx1 = new Transaction(
-      myWallet.getWalletAddress(),
-      yourWallet.getWalletAddress(),
+      myWallet.getAddress(),
+      yourWallet.getAddress(),
       100
     );
 

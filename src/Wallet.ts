@@ -4,24 +4,33 @@ export const ec = new Elliptic.ec("secp256k1");
 
 export class Wallet {
   publicKey: string;
-  privateKey: string;
+  privateKey?: string;
 
-  constructor(publicKey?: string, privateKey?: string) {
-    if (publicKey && privateKey) {
-      this.publicKey = publicKey;
-      this.privateKey = privateKey;
-    } else {
-      const key = ec.genKeyPair();
-      this.publicKey = key.getPublic("hex");
-      this.privateKey = key.getPrivate("hex");
-    }
+  constructor(publicKey: string, privateKey?: string) {
+    this.publicKey = publicKey;
+    this.privateKey = privateKey;
   }
 
-  getWalletAddress() {
+  getAddress() {
     return this.publicKey;
   }
 
   getPrivateKey() {
+    if (!this.privateKey) {
+      throw new Error("This is not your wallet!");
+    }
+
     return ec.keyFromPrivate(this.privateKey);
+  }
+
+  authenticate(privateKey: string) {
+    this.privateKey = privateKey;
+  }
+
+  public static create() {
+    const key = ec.genKeyPair();
+    const wallet = new Wallet(key.getPublic("hex"), key.getPrivate("hex"));
+
+    return wallet;
   }
 }
